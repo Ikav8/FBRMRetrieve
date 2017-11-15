@@ -46,7 +46,7 @@ def getDataFromFBRM():
                 for cell in cells_in_row:
                     data_partido.append(cell.get_text())
                 partidos.append(data_partido)
-    respuesta = ['<table id="resultados_tabla"><tr><th>Equipo</th><th>Jornada</th><th>Equipo Local</th><th></th><th></th><th>Equipo Visitante</th></tr>']
+    respuesta = ['<div id = "contenidoACoger"><table id="resultados_tabla"><tr><th>Equipo</th><th>Jornada</th><th>Equipo Local</th><th></th><th></th><th>Equipo Visitante</th></tr>']
     for partido in partidos:
 
         equipo = partido[0]
@@ -58,7 +58,5 @@ def getDataFromFBRM():
 
         respuesta.append('<tr><td>'+equipo+'</td><td>'+jornada+'</td><td>'+equipo_local+'</td><td>'+res_local+'</td><td>'+res_visitante+'</td><td>'+equipo_visitante+'</td></tr>')
 
-    respuesta.append("</table>")
-
-    return("\n".join(respuesta))
+    respuesta.append("</table></div>")
 
