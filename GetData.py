@@ -60,3 +60,5 @@ def getDataFromFBRM():
 
     respuesta.append("</table></div>")
 
+    return("\n".join(respuesta))
+
