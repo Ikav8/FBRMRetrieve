@@ -58,7 +58,7 @@ def getDataFromFBRM():
 
         respuesta.append('<tr><td>'+equipo+'</td><td>'+jornada+'</td><td>'+equipo_local+'</td><td>'+res_local+'</td><td>'+res_visitante+'</td><td>'+equipo_visitante+'</td></tr>')
 
-    respuesta.append("</table><p style=\"text-align: center;\"><a class=\"btn btn-theme-primary-outline\" href=\"https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx\">Más resultados y clasificaciones</a></p></xmp>")
+    respuesta.append("</table><p style=\"text-align: center;\"><a target=\"_blank\" class=\"btn btn-theme-primary-outline\" href=\"https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx\">Más resultados y clasificaciones</a></p></xmp>")
 
     return("\n".join(respuesta))
 
