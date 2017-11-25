@@ -13,7 +13,7 @@ def getDataFromFBRM():
     url = "https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx"
 
     partidos = []
-
+    proximos_partidos = []
     for equipo, values in equipos.items():
 
         form_data = {}
@@ -33,9 +33,9 @@ def getDataFromFBRM():
         html = r.text
 
         soup = bs4.BeautifulSoup(html, "html.parser")
-        div_proximos_partidos = soup.find(id = "contenedor_informacion_PUltimaJornada")
+        div_ultimos_resultados = soup.find(id = "contenedor_informacion_PUltimaJornada")
 
-        rows_in_table = div_proximos_partidos.find_all('tr')
+        rows_in_table = div_ultimos_resultados.find_all('tr')
 
         for row in rows_in_table:
 
@@ -46,6 +46,19 @@ def getDataFromFBRM():
                 for cell in cells_in_row:
                     data_partido.append(cell.get_text())
                 partidos.append(data_partido)
+
+        div_proximos_partidos = soup.find(id = "contenedor_informacion_PProximosPartidos")
+        rows_in_table_2 = div_proximos_partidos.find_all('tr')
+        for row in rows_in_table_2:
+
+            if('FUENTE' in row.text):
+
+                cells_in_row = row.find_all('td')
+                data_partido = [equipo]
+                for cell in cells_in_row:
+                    data_partido.append(cell.get_text())
+                proximos_partidos.append(data_partido)
+
     respuesta = ['<xmp><table id="resultados_tabla"><tr><th>Equipo</th><th>Jornada</th><th>Equipo Local</th><th></th><th></th><th>Equipo Visitante</th></tr>']
     for partido in partidos:
 
@@ -58,7 +71,20 @@ def getDataFromFBRM():
 
         respuesta.append('<tr><td>'+equipo+'</td><td>'+jornada+'</td><td>'+equipo_local+'</td><td>'+res_local+'</td><td>'+res_visitante+'</td><td>'+equipo_visitante+'</td></tr>')
 
-    respuesta.append("</table><p style=\"text-align: center;\"><a target=\"_blank\" class=\"btn btn-theme-primary-outline\" href=\"https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx\">Más resultados y clasificaciones</a></p></xmp>")
+    respuesta.append('</table><h2></h2><h2 style="text-align:center">Próximos Partidos</h2><table id="resultados_tabla"><tr><th>Equipo</th><th>Equipo Local</th><th>Equipo Visitante</th><th>Fecha</th><th>Lugar</th></tr>')
+
+    for partido in proximos_partidos:
+        equipo = partido[0]
+        local = partido[1]
+        visitante = partido[2]
+        fecha = partido[3]
+        lugar = partido[4]
+
+        respuesta.append('<tr><td>' + equipo + '</td><td>' + local + '</td><td>' + visitante + '</td><td>' + fecha + '</td><td>' + lugar + '</td></tr>')
+
+    respuesta.append('</table><p style=\"text-align: center;\"><a target=\"_blank\" class=\"btn btn-theme-primary-outline\" href=\"https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx\">Más resultados y clasificaciones</a></p></xmp>')
+
+    #"<p style=\"text-align: center;\"><a target=\"_blank\" class=\"btn btn-theme-primary-outline\" href=\"https://www.fbrm.org/competicion-309/competiciones-fbrm.aspx\">Más resultados y clasificaciones</a></p></xmp>")
 
     return("\n".join(respuesta))
 
